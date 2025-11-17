@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="#">Portal</a>
+
+        <div class="d-flex ms-auto">
+            <a href="/logout" class="btn btn-outline-light">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+
+    <!-- WELCOME -->
+    <div class="mb-4">
+        <h2 class="fw-semibold">
+            Welcome, <span th:text="${session.user.firstName}">User</span>!
+        </h2>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- INSTRUCTOR SECTION -->
+    <!-- ========================================================= -->
+    <section sec:authorize="hasRole('INSTRUCTOR')">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="fw-bold">Your Courses</h3>
+            <a href="/instructor/create-course" class="btn btn-primary">
+                + Add Course
+            </a>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="c : ${coursesTaught}">
+                        <td th:text="${c.id}"></td>
+                        <td th:text="${c.title}"></td>
+
+                        <td class="text-end">
+                            <a th:href="@{'/instructor/edit-course/' + ${c.id}}"
+                               class="btn btn-warning btn-sm me-1">
+                                Edit
+                            </a>
+
+                            <a th:href="@{'/instructor/delete-course/' + ${c.id}}"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('Are you sure you want to delete this course?');">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr th:if="${coursesTaught.size() == 0}">
+                        <td colspan="3" class="text-center py-3 text-muted">
+                            You haven't created any courses yet.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- STUDENT SECTION -->
+    <!-- ========================================================= -->
+    <section sec:authorize="hasRole('STUDENT')" class="mt-4">
+
+        <h3 class="fw-bold mb-3">Your Enrolled Courses</h3>
+
+        <div class="card shadow-sm">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" th:each="c : ${coursesEnrolled}">
+                    <strong th:text="${c.title}"></strong>
+                </li>
+
+                <li class="list-group-item text-muted text-center"
+                    th:if="${coursesEnrolled.size() == 0}">
+                    You are not enrolled in any courses yet.
+                </li>
+            </ul>
+        </div>
+
+        <a href="/student/find-course" class="btn btn-primary mt-3">+ Find Course</a>
+
+
+    </section>
+
+</div>
+
+</body>
+</html>

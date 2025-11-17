@@ -1,41 +1,54 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-
 @Entity
 @Table(name="review")
 public class Review {
+
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id")
-private int id;
-    @Column(name="comment")
-private String comment;
-public Review() {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-}
-public Review( String comment) {
-    this.comment = comment;
-}
-public int getId() {
-    return id;
-}
-public void setId(int id) {
-    this.id = id;
-}
-public String getComment() {
-    return comment;
-}
-public void setComment(String comment) {
-    this.comment = comment;
+    private String comment;
 
-}
+    @ManyToOne
+    @JoinColumn(name="course_id")
+    private Course course;
 
-    @Override
-    public String toString() {
-        return "Review{" +
-                "id=" + id +
-                ", comment='" + comment + '\'' +
-                '}';
+    @ManyToOne
+    @JoinColumn(name="student_id")
+    private User student;
+
+    public Review() {}
+
+    public Review(String comment, User student) {
+        this.comment = comment;
+        this.student = student;
     }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public User getStudent() {
+        return student;
+    }
+
+    public void setStudent(User student) {
+        this.student = student;
+    }
+
 }
+
