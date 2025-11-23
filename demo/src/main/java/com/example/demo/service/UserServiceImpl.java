@@ -156,9 +156,9 @@ public class UserServiceImpl implements UserService {
                 user.getEmail(),
                 user.getPassword(),
                 user.isEnabled(),
-                true, // accountNonExpired
-                true, // credentialsNonExpired
-                true, // accountNonLocked
+                true, 
+                true,
+                true, 
                 authorities
         );
     }
