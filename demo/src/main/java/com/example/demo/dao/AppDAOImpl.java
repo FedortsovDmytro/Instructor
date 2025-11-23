@@ -53,7 +53,6 @@ public class AppDAOImpl implements AppDAO {
     @Override
     @Transactional
     public void deleteUser(User user) {
-        // If user is instructor, detach courses
         if ("INSTRUCTOR".equals(user.getRole()) && user.getCourses() != null) {
             user.getCourses().forEach(course -> course.setInstructor(null));
         }
