@@ -13,7 +13,6 @@
 
     <h2 class="mb-4">Find a Course</h2>
 
-    <!-- SEARCH BAR -->
     <form th:action="@{/student/find-course}" method="get" class="input-group mb-4">
         <input type="text"
                name="keywords"
@@ -24,7 +23,6 @@
         <button class="btn btn-primary">Search</button>
     </form>
 
-    <!-- RESULTS -->
     <div th:if="${courses != null}">
 
         <h5 th:if="${courses.size() == 0}" class="text-danger">
